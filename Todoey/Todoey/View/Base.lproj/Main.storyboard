@@ -65,7 +65,7 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ToDoItemCell" id="OmV-Na-yOY">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="OmV-Na-yOY" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OmV-Na-yOY" id="ue8-cE-epl">
@@ -73,11 +73,6 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="DZA-Md-NhG" appends="YES" id="BcL-SR-jcb"/>
-                                    <outletCollection property="gestureRecognizers" destination="DZA-Md-NhG" appends="YES" id="3kh-FE-nWS"/>
-                                    <outletCollection property="gestureRecognizers" destination="DZA-Md-NhG" appends="YES" id="GVL-Rn-xrY"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

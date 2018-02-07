@@ -122,7 +122,7 @@ class CategoryViewController: SwipeTableViewController {
                 print("There was an error deleting item \(error)")
             }
         }
-        tableView.reloadData()
+        
     }
     
     

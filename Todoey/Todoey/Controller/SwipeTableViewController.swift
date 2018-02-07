@@ -18,10 +18,11 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
      
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
         
-    
         cell.delegate = self
+        
         return cell
     }
 
@@ -32,7 +33,6 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // handle action by updating model with deletion
             
-            print("Deleting this cell")
             self.updateModel(at: indexPath)
         }
         
@@ -41,6 +41,15 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         
         return [deleteAction]
     }
+    
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        var options = SwipeTableOptions()
+        options.expansionStyle = .destructive
+        return options
+    }
+    
+   
     
     func updateModel(at indexPath: IndexPath) {
         
