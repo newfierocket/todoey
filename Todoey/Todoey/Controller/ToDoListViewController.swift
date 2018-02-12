@@ -8,23 +8,57 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class ToDoListViewController: SwipeTableViewController {
     
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     var toDoItems: Results<Item>?
     let realm = try! Realm()
-
+    var selectedColor : String?
+    
     var selectedCategory : Category? {
         didSet {
-            print(selectedCategory!)
+            //print(selectedCategory!)
             loadItems()
+            tableView.separatorStyle = .none
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        title = selectedCategory?.name
+        guard let colorHex = selectedCategory?.cellColor else { fatalError() }
+        updateNavBar(withHexCode: colorHex)
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        updateNavBar(withHexCode: "1D9BF6")
+    }
+    
+    func updateNavBar (withHexCode colorHexCode: String) {
+        
+        guard let navBar = navigationController?.navigationBar else {fatalError("Navigation controller not loaded")}
+        
+        guard let navBarColor = UIColor(hexString: colorHexCode) else { fatalError() }
+        
+        navBar.barTintColor = navBarColor
+        navBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
+        searchBar.barTintColor = navBarColor
+        navBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : ContrastColorOf(navBarColor, returnFlat: true)]
+        
+        
+        
+    }
+    
     
     
     //MARK: NUMBER OF ROWS IN SECTION
@@ -44,7 +78,24 @@ class ToDoListViewController: SwipeTableViewController {
 
             
             cell.textLabel?.text = item.title //SETS CELL TO ITEM IN ARRAY
+            
             cell.accessoryType = item.done ? .checkmark : .none  //ADDS CHECK MARK OR OTHER ACCESSORY SPECIAL IF STATMENT HERE
+            
+            if let cellColor = HexColor(selectedColor!) {
+                if let color = cellColor.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(toDoItems!.count)) {
+                cell.backgroundColor = color
+                cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+                }
+            } else {
+                if let color = FlatSkyBlue().darken(byPercentage: CGFloat(indexPath.row) / CGFloat(toDoItems!.count)) {
+                    cell.backgroundColor = color
+                    cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+                }
+                
+            }
+            
+
+            
         } else {
             cell.textLabel?.text = "No Items added"
         }

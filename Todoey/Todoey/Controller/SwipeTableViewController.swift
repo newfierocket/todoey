@@ -10,9 +10,13 @@ import UIKit
 import SwipeCellKit
 
 class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegate  {
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = 88
     }
 
      
@@ -22,6 +26,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
         
         cell.delegate = self
+        
         
         return cell
     }
@@ -37,7 +42,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         }
         
         // customize the action appearance
-        //deleteAction.image = UIImage(named: "delete")
+        deleteAction.image = UIImage(named: "delete-icon")
         
         return [deleteAction]
     }

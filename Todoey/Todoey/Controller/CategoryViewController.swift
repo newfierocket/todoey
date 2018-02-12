@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 
 class CategoryViewController: SwipeTableViewController {
@@ -22,9 +23,11 @@ class CategoryViewController: SwipeTableViewController {
         super.viewDidLoad()
         
         loadData()
-       
-
+       tableView.separatorStyle = .none
+        
     }
+    
+    
     //MARK: TABLE VIEW NUMBER OF ROWS
     //SETS UP NUMBER OF ROWS
     
@@ -38,9 +41,17 @@ class CategoryViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-
-
+        
         cell.textLabel?.text = categoryArray?[indexPath.row].name ?? "No Categories added yet"
+        
+    
+        if let cellColor = categoryArray?[indexPath.row].cellColor {
+            guard let backGroundColor = HexColor(cellColor) else { fatalError() }
+            cell.backgroundColor = backGroundColor
+            cell.textLabel?.textColor = ContrastColorOf(backGroundColor, returnFlat: true)
+        } else {
+            cell.backgroundColor = UIColor.randomFlat
+        }
         
         return cell
     }
@@ -74,6 +85,8 @@ class CategoryViewController: SwipeTableViewController {
         
         if let indexPath = tableView.indexPathForSelectedRow {
             destinationVC.selectedCategory = categoryArray?[indexPath.row]
+            destinationVC.selectedColor = categoryArray?[indexPath.row].cellColor
+            
             
         }
     }
@@ -95,6 +108,7 @@ class CategoryViewController: SwipeTableViewController {
             let newCategory = Category()
             newCategory.name = textField.text! //SETTING ENTERED TEXT FIELD TO INSTANCE PROPERTY
             //newCategory.done = false
+            newCategory.cellColor = UIColor.randomFlat.hexValue()
             
             self.save(category: newCategory)
             self.tableView.reloadData()
@@ -116,6 +130,9 @@ class CategoryViewController: SwipeTableViewController {
         if let categoryToDelete = categoryArray?[indexPath.row] {
             do {
                 try realm.write {
+                    for item in categoryArray![indexPath.row].items {
+                        realm.delete(item)
+                    }
                     realm.delete(categoryToDelete)
                 }
             } catch {
